@@ -8,6 +8,7 @@ import (
 type TableRepository interface {
 	UpdateAvailability(id string)
 	FindByAvailability() []entity.Table
+	FindById(id string) entity.Table
 }
 
 type tableRepository struct {
@@ -39,6 +40,17 @@ func (t *tableRepository) FindByAvailability() []entity.Table {
 		}
 	}
 	return tableAvailable
+}
+
+func (t *tableRepository) FindById(id string) entity.Table {
+	var selectedTable entity.Table
+	for i, tbl := range t.db {
+		if tbl.TableNo == id {
+			selectedTable = t.db[i]
+			break
+		}
+	}
+	return selectedTable
 }
 
 func NewTableRepository(tableCapacity int) TableRepository {

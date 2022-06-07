@@ -11,6 +11,7 @@ type Bill struct {
 	TransDate  time.Time
 	CustomerId Customer
 	BillDetail []BillDetail
+	IsSettled  bool
 }
 
 func (b Bill) String() string {
@@ -20,5 +21,6 @@ Table No: [%v]
 Trans Date: %v
 Customer: [%v]
 Bill Detail: [%v]
-`, b.BillNo, b.TableNo, b.TransDate, b.CustomerId, b.BillDetail)
+Settled: %v
+`, b.BillNo, b.TableNo, b.TransDate, b.CustomerId, b.BillDetail, b.IsSettled)
 }

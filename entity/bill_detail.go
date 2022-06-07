@@ -4,8 +4,7 @@ import "fmt"
 
 type BillDetail struct {
 	BillDetailId string
-	OrderedMenu  FnB
-	Qty          int
+	CustomerOrder
 }
 
 func (bd BillDetail) String() string {
