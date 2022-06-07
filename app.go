@@ -11,10 +11,15 @@ func main() {
 
 func testEntity() {
 	//table01 := entity.Table{TableNo: "T01"}
-	fnbRepo := repository.NewFnBRepository()
-	fmt.Println(fnbRepo.FindById("F002"))
-	fmt.Println(fnbRepo.FindByName("Es"))
-	fmt.Println(fnbRepo.FindByName("asi"))
+	//fnbRepo := repository.NewFnBRepository()
+	//fmt.Println(fnbRepo.FindById("F002"))
+	//fmt.Println(fnbRepo.FindByName("Es"))
+	//fmt.Println(fnbRepo.FindByName("asi"))
+
+	tableRepo := repository.NewTableRepository(30)
+	tableRepo.UpdateAvailability("T02")
+	tableRepo.UpdateAvailability("T03")
+	fmt.Println(tableRepo.FindByAvailability())
 
 	//customer01 := entity.Customer{
 	//	CustomerId:    "C00001",
