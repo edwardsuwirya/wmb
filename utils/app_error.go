@@ -17,3 +17,11 @@ type ProductNotFoundError struct {
 func (e ProductNotFoundError) Error() string {
 	return fmt.Sprintf("Product [%s] not found\n", e.ProductInfo)
 }
+
+type BillNotFoundError struct {
+	BillNo string
+}
+
+func (e BillNotFoundError) Error() string {
+	return fmt.Sprintf("Bill [%s] not found\n", e.BillNo)
+}

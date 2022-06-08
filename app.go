@@ -4,28 +4,38 @@ import (
 	"enigmacamp.com/wmbpos/entity"
 	"enigmacamp.com/wmbpos/repository"
 	"enigmacamp.com/wmbpos/usecase"
+	"enigmacamp.com/wmbpos/utils"
 	"fmt"
 )
 
 func main() {
-	fnbRepo := repository.NewFnBRepository()
-	tableRepo := repository.NewTableRepository(30)
-	trxRepo := repository.NewTrxRepository()
-
+	ioMenu := utils.NewFileIo("data/menu.dat")
+	ioMenu.Create()
+	ioMenu.Clear()
+	fnbRepo := repository.NewFnBFileRepository(ioMenu)
 	findMenuUseCase := usecase.NewFindMenuUseCase(fnbRepo)
-	f1, err := findMenuUseCase.FindMenuById("F001")
+	f1, err := findMenuUseCase.FindMenuById("B002")
 	if err != nil {
 		fmt.Printf("%s\n", err.Error())
 	}
-	b1, err := findMenuUseCase.FindMenuById("B001")
+
+	_, err = findMenuUseCase.FindMenuByName("asi")
 	if err != nil {
 		fmt.Printf("%s\n", err.Error())
 	}
-	name, err := findMenuUseCase.FindMenuByName("asi")
-	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-	}
-	fmt.Printf("Menu [%v", name)
+
+	ioTable := utils.NewFileIo("data/table.dat")
+	ioTable.Create()
+	ioTable.Clear()
+	tableRepo := repository.NewTableFileRepository(ioTable, 5)
+	tableViewUseCase := usecase.NewTableViewUseCase(tableRepo)
+	tableViewUseCase.ViewTable()
+	tableRepo.UpdateAvailability("T02")
+	tableViewUseCase.ViewTable()
+
+	ioTrx := utils.NewFileIo("data/trx.dat")
+	ioTrx.Create()
+	trxRepo := repository.NewTrxFileRepository(ioTrx)
 
 	customerOrderUseCase := usecase.NewCustomerOrderUseCase(trxRepo, tableRepo)
 	customerPaymentUseCase := usecase.NewCustomerPaymentUseCase(trxRepo, tableRepo)
@@ -35,22 +45,24 @@ func main() {
 		Name:          "Jution",
 	}
 
-	newBillNo, err := customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
+	newBillNo, err := customerOrderUseCase.TakeOrder(customer01, "T05", []entity.CustomerOrder{
 		{OrderedMenu: f1, Qty: 1},
-		{OrderedMenu: b1, Qty: 2},
 	})
 	if err != nil {
 		fmt.Printf("%s\n", err.Error())
 	}
+	err = customerPaymentUseCase.OrderPayment(newBillNo)
+	if err != nil {
+		fmt.Printf("%s\n", err.Error())
+	}
+	//newBillNo, err = customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
+	//	{OrderedMenu: f1, Qty: 1},
+	//	{OrderedMenu: b1, Qty: 2},
+	//})
+	//if err != nil {
+	//	fmt.Printf("%s\n", err.Error())
+	//}
 	//customerPaymentUseCase.OrderPayment(newBillNo)
-	newBillNo, err = customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
-		{OrderedMenu: f1, Qty: 1},
-		{OrderedMenu: b1, Qty: 2},
-	})
-	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-	}
-	customerPaymentUseCase.OrderPayment(newBillNo)
 	//
 	//tableViewUseCase := usecase.NewTableViewUseCase(tableRepo)
 	//tableViewUseCase.ViewTable()
