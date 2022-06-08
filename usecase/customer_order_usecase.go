@@ -3,6 +3,7 @@ package usecase
 import (
 	"enigmacamp.com/wmbpos/entity"
 	"enigmacamp.com/wmbpos/repository"
+	"enigmacamp.com/wmbpos/utils"
 	"fmt"
 )
 
@@ -11,7 +12,7 @@ type CustomerOrderUseCase struct {
 	tableRepo repository.TableRepository
 }
 
-func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo string, orders []entity.CustomerOrder) string {
+func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo string, orders []entity.CustomerOrder) (string, error) {
 	var newBillNo string
 	tableReserve := c.tableRepo.FindById(tableNo)
 	if tableReserve.IsAvailable {
@@ -19,9 +20,9 @@ func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo strin
 		c.tableRepo.UpdateAvailability(tableNo)
 		fmt.Printf("Order %s successfully created\n", newBillNo)
 	} else {
-		fmt.Printf("Table %s is not available\n", tableReserve.TableNo)
+		return "", utils.TableUnavailableError{TableNo: tableNo}
 	}
-	return newBillNo
+	return newBillNo, nil
 }
 
 func NewCustomerOrderUseCase(trxRepo repository.TrxRepository, tableRepo repository.TableRepository) CustomerOrderUseCase {
