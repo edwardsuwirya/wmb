@@ -15,7 +15,11 @@ func (c *TableViewUseCase) ViewTable() []entity.Table {
 	fmt.Println(tables)
 	return tables
 }
-
+func (c *TableViewUseCase) GetTable(tableNo string) entity.Table {
+	tables := c.tableRepo.FindById(tableNo)
+	fmt.Println(tables)
+	return tables
+}
 func NewTableViewUseCase(tableRepo repository.TableRepository) TableViewUseCase {
 	return TableViewUseCase{
 		tableRepo: tableRepo,

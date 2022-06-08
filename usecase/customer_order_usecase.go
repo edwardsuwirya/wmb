@@ -11,11 +11,11 @@ type CustomerOrderUseCase struct {
 	tableRepo repository.TableRepository
 }
 
-func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, table entity.Table, orders []entity.CustomerOrder) string {
+func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo string, orders []entity.CustomerOrder) string {
 	var newBillNo string
-	tableReserve := c.tableRepo.FindById(table.TableNo)
+	tableReserve := c.tableRepo.FindById(tableNo)
 	if tableReserve.IsAvailable {
-		newBillNo = c.trxRepo.Create(customer, table, orders)
+		newBillNo = c.trxRepo.Create(customer, tableReserve, orders)
 		c.tableRepo.UpdateAvailability(tableReserve.TableNo)
 		fmt.Printf("Order %s successfully created\n", newBillNo)
 	} else {

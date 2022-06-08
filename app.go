@@ -23,13 +23,13 @@ func main() {
 		MobilePhoneNo: "08788123123",
 		Name:          "Jution",
 	}
-	table02 := tableRepo.FindById("T02")
-	newBillNo := customerOrderUseCase.TakeOrder(customer01, table02, []entity.CustomerOrder{
+
+	newBillNo := customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
 		{OrderedMenu: f1, Qty: 1},
 		{OrderedMenu: b1, Qty: 2},
 	})
 	customerPaymentUseCase.OrderPayment(newBillNo)
-	newBillNo = customerOrderUseCase.TakeOrder(customer01, table02, []entity.CustomerOrder{
+	newBillNo = customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
 		{OrderedMenu: f1, Qty: 1},
 		{OrderedMenu: b1, Qty: 2},
 	})
