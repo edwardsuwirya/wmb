@@ -12,7 +12,7 @@ type CustomerPaymentUseCase struct {
 
 func (c *CustomerPaymentUseCase) OrderPayment(billNo string) {
 	bill := c.trxRepo.FindById(billNo)
-	bill.IsSettled = true
+	c.trxRepo.UpdateBySettled(billNo)
 	c.tableRepo.UpdateAvailability(bill.TableNo.TableNo)
 	fmt.Printf("Order %s successfully paid\n", billNo)
 }

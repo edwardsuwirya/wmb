@@ -16,7 +16,7 @@ func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo strin
 	tableReserve := c.tableRepo.FindById(tableNo)
 	if tableReserve.IsAvailable {
 		newBillNo = c.trxRepo.Create(customer, tableReserve, orders)
-		c.tableRepo.UpdateAvailability(tableReserve.TableNo)
+		c.tableRepo.UpdateAvailability(tableNo)
 		fmt.Printf("Order %s successfully created\n", newBillNo)
 	} else {
 		fmt.Printf("Table %s is not available\n", tableReserve.TableNo)
