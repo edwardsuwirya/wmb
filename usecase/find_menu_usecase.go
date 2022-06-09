@@ -14,7 +14,7 @@ type FindMenuUseCase struct {
 func (c *FindMenuUseCase) FindMenuById(id string) (entity.FnB, error) {
 	fnb := c.fnbRepo.FindById(id)
 	if fnb.FnBId == "" {
-		return entity.FnB{}, utils.ProductNotFoundError{ProductInfo: id}
+		return entity.FnB{}, utils.DataNotFoundError(id)
 	} else {
 		fmt.Printf("Product found : [%v]\n", fnb)
 	}
@@ -23,7 +23,7 @@ func (c *FindMenuUseCase) FindMenuById(id string) (entity.FnB, error) {
 func (c *FindMenuUseCase) FindMenuByName(keyword string) ([]entity.FnB, error) {
 	fnbs := c.fnbRepo.FindByName(keyword)
 	if len(fnbs) == 0 {
-		return nil, utils.ProductNotFoundError{ProductInfo: keyword}
+		return nil, utils.DataNotFoundError(keyword)
 	} else {
 		fmt.Printf("Product found: [%v]\n", fnbs)
 	}
