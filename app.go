@@ -1,7 +1,6 @@
 package main
 
 import (
-	"enigmacamp.com/wmbpos/entity"
 	"enigmacamp.com/wmbpos/repository"
 	"enigmacamp.com/wmbpos/usecase"
 	"enigmacamp.com/wmbpos/utils"
@@ -14,7 +13,7 @@ func main() {
 	ioMenu.Clear()
 	fnbRepo := repository.NewFnBFileRepository(ioMenu)
 	findMenuUseCase := usecase.NewFindMenuUseCase(fnbRepo)
-	f1, err := findMenuUseCase.FindMenuById("B002")
+	_, err := findMenuUseCase.FindMenuById("B002")
 	if err != nil {
 		fmt.Printf("%s\n", err.Error())
 	}
@@ -37,24 +36,25 @@ func main() {
 	ioTrx.Create()
 	trxRepo := repository.NewTrxFileRepository(ioTrx)
 
-	customerOrderUseCase := usecase.NewCustomerOrderUseCase(trxRepo, tableRepo)
+	//customerOrderUseCase := usecase.NewCustomerOrderUseCase(trxRepo, tableRepo)
 	customerPaymentUseCase := usecase.NewCustomerPaymentUseCase(trxRepo, tableRepo)
-	customer01 := entity.Customer{
-		CustomerId:    "C00001",
-		MobilePhoneNo: "08788123123",
-		Name:          "Jution",
-	}
-
-	newBillNo, err := customerOrderUseCase.TakeOrder(customer01, "T05", []entity.CustomerOrder{
-		{OrderedMenu: f1, Qty: 1},
-	})
-	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-	}
-	err = customerPaymentUseCase.OrderPayment(newBillNo)
-	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-	}
+	//customer01 := entity.Customer{
+	//	CustomerId:    "C00001",
+	//	MobilePhoneNo: "08788123123",
+	//	Name:          "Jution",
+	//}
+	//
+	//newBillNo, err := customerOrderUseCase.TakeOrder(customer01, "T05", []entity.CustomerOrder{
+	//	{OrderedMenu: f1, Qty: 1},
+	//})
+	//if err != nil {
+	//	fmt.Printf("%s\n", err.Error())
+	//}
+	customerPaymentUseCase.PrintBill("8186549286549387071")
+	//err = customerPaymentUseCase.OrderPayment("8186549286549387071")
+	//if err != nil {
+	//	fmt.Printf("%s\n", err.Error())
+	//}
 	//newBillNo, err = customerOrderUseCase.TakeOrder(customer01, "T02", []entity.CustomerOrder{
 	//	{OrderedMenu: f1, Qty: 1},
 	//	{OrderedMenu: b1, Qty: 2},
