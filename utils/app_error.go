@@ -2,20 +2,38 @@ package utils
 
 import "fmt"
 
-type TableUnavailableError struct {
-	TableNo string
+type AppError struct {
+	ErrorCode    string
+	ErrorMessage string
+	ErrorType    int
 }
 
-func (e TableUnavailableError) Error() string {
-	return fmt.Sprintf("Table %s is not available\n", e.TableNo)
+func (e AppError) Error() string {
+	return fmt.Sprintf("type: %d, code:%s, err:%s", e.ErrorType, e.ErrorCode, e.ErrorMessage)
 }
 
-type ProductNotFoundError struct {
-	ProductInfo string
+func TableUnavailableError(tableNo string) error {
+	return AppError{
+		ErrorCode:    "X01",
+		ErrorMessage: fmt.Sprintf("Table %s is not available\n", tableNo),
+		ErrorType:    0,
+	}
 }
 
-func (e ProductNotFoundError) Error() string {
-	return fmt.Sprintf("Product [%s] not found\n", e.ProductInfo)
+func DataNotFoundError(info string) error {
+	return AppError{
+		ErrorCode:    "X02",
+		ErrorMessage: fmt.Sprintf("Data [%s] not found\n", info),
+		ErrorType:    0,
+	}
+}
+
+func GeneralError(message string) error {
+	return AppError{
+		ErrorCode:    "X06",
+		ErrorMessage: message,
+		ErrorType:    0,
+	}
 }
 
 type BillNotFoundError struct {

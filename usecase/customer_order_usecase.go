@@ -20,7 +20,7 @@ func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo strin
 		c.tableRepo.UpdateAvailability(tableNo)
 		fmt.Printf("Order %s successfully created\n", newBillNo)
 	} else {
-		return "", utils.TableUnavailableError{TableNo: tableNo}
+		return "", utils.TableUnavailableError(tableNo)
 	}
 	return newBillNo, nil
 }
