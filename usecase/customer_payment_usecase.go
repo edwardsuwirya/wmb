@@ -18,9 +18,16 @@ func (c *CustomerPaymentUseCase) PrintBill(billNo string) {
 	for _, billDetail := range bill.BillDetail {
 		totalBill = totalBill + (float64(billDetail.Qty) * billDetail.OrderedMenu.Price)
 	}
+	var billDisc float64
+	if bill.CustomerId.ActiveMember {
+		billDisc = (totalBill * bill.CustomerId.DiscountPct)
+	}
 	fmt.Println(strings.Repeat("=", 100))
+	fmt.Printf("Bill No %s\n", billNo)
 	fmt.Printf("Bill Items : %v\n", bill.BillDetail)
-	fmt.Printf("Total for bill %s : %.2f\n", billNo, totalBill)
+	fmt.Printf(" Total: %21.2f\n", totalBill)
+	fmt.Printf(" Disc: %21.2f\n", billDisc)
+	fmt.Printf(" Grand Total: %15.2f\n", totalBill-billDisc)
 	fmt.Println(strings.Repeat("=", 100))
 }
 

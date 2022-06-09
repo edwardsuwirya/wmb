@@ -27,7 +27,20 @@ func DataNotFoundError(info string) error {
 		ErrorType:    0,
 	}
 }
-
+func RequiredError(info string) error {
+	return AppError{
+		ErrorCode:    "X03",
+		ErrorMessage: fmt.Sprintf("Data [%s] is required\n", info),
+		ErrorType:    0,
+	}
+}
+func AlreadyExistError(info string) error {
+	return AppError{
+		ErrorCode:    "X04",
+		ErrorMessage: fmt.Sprintf("Data [%s] is already exist\n", info),
+		ErrorType:    0,
+	}
+}
 func GeneralError(message string) error {
 	return AppError{
 		ErrorCode:    "X06",
