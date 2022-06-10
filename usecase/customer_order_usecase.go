@@ -23,6 +23,7 @@ func (c *CustomerOrderUseCase) TakeOrder(customer entity.Customer, tableNo strin
 	// Auto Customer Registration
 	if cust.MobilePhoneNo == "" {
 		c.customerRepo.Create(&customer)
+		cust = customer
 	}
 	tableReserve := c.tableRepo.FindById(tableNo)
 	fmt.Println("==", tableReserve)
